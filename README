@@ -2,3 +2,10 @@
 RbWebKitGTK
 
 we're just getting started, nothing to see here.
+
+-------
+
+This page sets out WebKit deps on ubuntu
+http://packages.ubuntu.com/source/hardy/webkit
+
+I've developing against nightly build WebKit-r31823 - dan
