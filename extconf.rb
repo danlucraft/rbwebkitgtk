@@ -6,9 +6,9 @@ PACKAGE_NAME = "rbwebkitgtk"
 PACKAGE_IDS = ["webkit-1.0"]
 
 TOPDIR = ENV["RG2_DIR"] || File.expand_path(File.dirname(__FILE__) + '/..')
-p TOPDIR
+
 MKMF_GNOME2_DIR = TOPDIR + '/glib/src/lib'
-#SRCDIR = TOPDIR + '/gtkmozembed/src'
+
 SRCDIR = File.expand_path("./src")
 
 $LOAD_PATH.unshift MKMF_GNOME2_DIR
@@ -51,8 +51,8 @@ setup_win32(PACKAGE_NAME)
 #   exit 1
 # end
 
-add_depend_package("glib2", "glib/src", TOPDIR)
-add_depend_package("gtk2", "gtk/src", TOPDIR)
+#add_depend_package("glib2", "glib/src", TOPDIR)
+#add_depend_package("gtk2", "gtk/src", TOPDIR)
 
 have_library("webkit-1.0") or exit 1
 

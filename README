@@ -1,7 +1,19 @@
 
 RbWebKitGTK
 
-we're just getting started, nothing to see here.
+  1. export RG2_DIR=/path/to/ruby-gnome2-sources; ruby extconf.rb
+  2. make
+
+To require:
+  
+  require 'path/to/rbwebkitgtk/src/lib/webkit'
+
+To use the WebView Gtk Widget:
+
+  webview = Gtk::WebKit::WebView.new
+  webview.open("http://www.example.com/")
+   -or-
+  webview.load_html_string("<h1>Hi!</h1>")
 
 -------
 
