@@ -4,7 +4,7 @@ module Gtk
   end
 end
 
-require 'src/rbwebkitgtk.so'
+require 'rbwebkitgtk.so'
 
 class Gtk::WebKit::WebView
   alias :load_html_string_no_defaults :load_html_string
