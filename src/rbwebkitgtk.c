@@ -77,7 +77,7 @@ void
 Init_rbwebkitgtk()
 {
     VALUE rb_mWebKit = rb_eval_string("Gtk::WebKit");
-    VALUE rb_cWebView = G_DEF_CLASS(WEBKIT_TYPE_WEB_VIEW, "WebKit", rb_mWebKit);
+    VALUE rb_cWebView = G_DEF_CLASS(WEBKIT_TYPE_WEB_VIEW, "WebView", rb_mWebKit);
 
     rb_define_method(rb_cWebView, "initialize", wk_initialize, 0);
 

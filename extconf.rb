@@ -54,7 +54,7 @@ setup_win32(PACKAGE_NAME)
 add_depend_package("glib2", "glib/src", TOPDIR)
 add_depend_package("gtk2", "gtk/src", TOPDIR)
 
-have_library("webkit") or exit 1
+have_library("webkit-1.0") or exit 1
 
 # have_func('gtk_moz_embed_new') or exit 1
 # have_func('gtk_moz_embed_set_profile_path') or exit 1
