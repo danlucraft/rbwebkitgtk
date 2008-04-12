@@ -1,15 +1,21 @@
 
 RbWebKitGTK
 
+These are semi-usable bindings. There are a lot of methods missing,
+and only one class, the Gtk::WebKit::WebView widget. But it works
+for displaying web pages and arbitrary HTML.
+
 To build:
 
   1. cd /path/to/rbwebkitgtk/
-  2. export RG2_DIR=/path/to/ruby-gnome2-sources; ruby extconf.rb
+  2. export RG2_DIR=/path/to/ruby-gnome2-sources/; ruby extconf.rb
   3. make
+  4. (as root) 
+     make install 
 
 To require:
   
-  require 'path/to/rbwebkitgtk/src/lib/webkit'
+  require 'webkit'
 
 To use the WebView Gtk Widget:
 

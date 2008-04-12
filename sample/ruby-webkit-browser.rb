@@ -2,8 +2,9 @@
 require 'src/lib/webkit'
 
 win = Gtk::Window.new
-wv = Gtk::WebKit::WebView.new
 win.signal_connect("destroy") { Gtk.main_quit }
+
+wv = Gtk::WebKit::WebView.new
 
 vbox = Gtk::VBox.new
 hbox = Gtk::HBox.new
@@ -44,6 +45,13 @@ vbox.pack_start(hbox, false)
 status = Gtk::Statusbar.new
 status.has_resize_grip=false
 status_context = status.get_context_id("Link")
+
+wv.signal_connect("hovering-over-link") do |_, _, link|
+  status.pop(status_context)
+  if link
+    status.push(status_context, link)
+  end
+end
 
 vbox.pack_start(wv)
 vbox.pack_start(status, false)
