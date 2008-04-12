@@ -1,8 +1,11 @@
 
 RbWebKitGTK
 
-  1. export RG2_DIR=/path/to/ruby-gnome2-sources; ruby extconf.rb
-  2. make
+To build:
+
+  1. cd /path/to/rbwebkitgtk/
+  2. export RG2_DIR=/path/to/ruby-gnome2-sources; ruby extconf.rb
+  3. make
 
 To require:
   
