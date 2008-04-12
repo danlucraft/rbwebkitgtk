@@ -32,6 +32,8 @@
 
 #include "rbwebkitgtkversion.h"
 
+#define _SELF(s) (WEBKIT_WEB_VIEW(RVAL2GOBJ(s)))
+
 /*
  * Class: Gtk::WebKit::WebView
  *
@@ -59,14 +61,20 @@
  *
  */
 static VALUE
-wk_initialize(self)
+wk_webview_initialize(self)
     VALUE self;
 {
     RBGTK_INITIALIZE(self, WEBKIT_WEB_VIEW (webkit_web_view_new ()));
     return Qnil;
 }
 
-
+static VALUE
+wk_webview_open(self, rb_url)
+    VALUE self, rb_url;
+{
+    webkit_web_view_open (_SELF(self), RVAL2CSTR(rb_url));
+    return self;
+}
 
 /*                                                           */
 /*************************************************************/
@@ -79,7 +87,8 @@ Init_rbwebkitgtk()
     VALUE rb_mWebKit = rb_eval_string("Gtk::WebKit");
     VALUE rb_cWebView = G_DEF_CLASS(WEBKIT_TYPE_WEB_VIEW, "WebView", rb_mWebKit);
 
-    rb_define_method(rb_cWebView, "initialize", wk_initialize, 0);
+    rb_define_method(rb_cWebView, "initialize", wk_webview_initialize, 0);
+    rb_define_method(rb_cWebView, "open", wk_webview_open, 1);
 
     G_DEF_SETTERS(rb_cWebView);
 }

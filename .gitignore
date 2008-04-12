@@ -3,3 +3,4 @@ src/Makefile
 src/*.o
 src/*.so
 src/semantic.cache
+src/rbwebkitgtkversion.h
