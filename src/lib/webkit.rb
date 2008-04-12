@@ -1,7 +1,9 @@
 require 'gtk2'
-require 'webkit.so'
-
 module Gtk
-  class WebKit
+  module WebKit
+    class WebView
+    end
   end
 end
+
+require 'src/rbwebkitgtk.so'
