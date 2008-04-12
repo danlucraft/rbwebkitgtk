@@ -32,7 +32,7 @@
 
 #include "rbwebkitgtkversion.h"
 
-#define _SELF(s) (WEBKIT_WEB_VIEW(RVAL2GOBJ(s)))
+#define _WEBVIEW_SELF(s) (WEBKIT_WEB_VIEW(RVAL2GOBJ(s)))
 
 /*
  * Class: Gtk::WebKit::WebView
@@ -68,13 +68,161 @@ wk_webview_initialize(self)
     return Qnil;
 }
 
+/*
+ * Method: open(url)
+ *
+ * url: the url to load (String).
+ *
+ * This method starts loading the given url, and returns
+ * immediately. The url should be in the form "http://www.gnome.org".
+ *
+ * Returns: self.
+ *
+ */
+
 static VALUE
 wk_webview_open(self, rb_url)
     VALUE self, rb_url;
 {
-    webkit_web_view_open (_SELF(self), RVAL2CSTR(rb_url));
+    webkit_web_view_open (_WEBVIEW_SELF(self), RVAL2CSTR(rb_url));
     return self;
 }
+
+/*
+ * Method: stop_loading
+ *
+ * Stops loading the current page.
+ *
+ * Returns: self.
+ *
+ */
+static VALUE
+wk_webview_stop_loading(self)
+    VALUE self;
+{
+    webkit_web_view_stop_loading(_WEBVIEW_SELF(self));
+    return self;
+}
+
+/*
+ * Method: can_go_back?
+ *
+ * This method reflects the status of the browsing history.
+ *
+ * Returns: True if the browser can go back one page.
+ *
+ */
+static VALUE
+wk_webview_can_go_back(self)
+    VALUE self;
+{
+    return CBOOL2RVAL(webkit_web_view_can_go_back(_WEBVIEW_SELF(self)));
+}
+
+/*
+ * Method: can_go_forward?
+ *
+ * This method reflects the status of the browsing history.
+ *
+ * Returns: True if the browser can go forward one page.
+ *
+ */
+static VALUE
+wk_webview_can_go_forward(self)
+    VALUE self;
+{
+    return CBOOL2RVAL(webkit_web_view_can_go_forward(_WEBVIEW_SELF(self)));
+}
+
+/*
+ * Method: go_back
+ *
+ * Tells the browser to go back one page in the history.
+ *
+ * Returns: the object itself.
+ *
+ */
+static VALUE
+wk_webview_go_back(self)
+    VALUE self;
+{
+    webkit_web_view_go_back(_WEBVIEW_SELF(self));
+    return self;
+}
+
+/*
+ * Method: go_forward
+ *
+ * Tells the browser to go one page forward in the history.
+ *
+ * Returns: the object itself.
+ *
+ */
+static VALUE
+wk_webview_go_forward(self)
+    VALUE self;
+{
+    webkit_web_view_go_forward(_WEBVIEW_SELF(self));
+    return self;
+}
+
+
+/*
+ * Method: reload
+ *
+ * Reloads the current page.
+ *
+ * Returns: self.
+ *
+ */
+static VALUE
+wk_webview_reload(self)
+    VALUE self;
+{
+    webkit_web_view_reload(_WEBVIEW_SELF(self));
+    return self;
+}
+
+/*
+ * Method: load_html_string
+ *
+ * Displays the contents of an HTML string.
+ *
+ * Returns: self.
+ *
+ */
+
+static VALUE
+wk_webview_load_html_string(self, rb_content, rb_uri)
+    VALUE self, rb_content, rb_uri;
+{
+    gchar* base_uri = NULL;
+    if (rb_uri != Qnil)
+        base_uri = RVAL2CSTR(rb_uri);
+    webkit_web_view_load_html_string(_WEBVIEW_SELF(self), 
+                                     RVAL2CSTR(rb_content),
+                                     base_uri);
+    return self;
+}
+
+/*
+ * Method: execute_script
+ *
+ * Executes a string of JavaScript.
+ *
+ * Returns: self.
+ *
+ */
+
+static VALUE
+wk_webview_execute_script(self, rb_script)
+    VALUE self, rb_script;
+{
+    webkit_web_view_execute_script(_WEBVIEW_SELF(self), 
+                                   RVAL2CSTR(rb_script));
+    return self;
+}
+
 
 /*                                                           */
 /*************************************************************/
@@ -89,6 +237,14 @@ Init_rbwebkitgtk()
 
     rb_define_method(rb_cWebView, "initialize", wk_webview_initialize, 0);
     rb_define_method(rb_cWebView, "open", wk_webview_open, 1);
+    rb_define_method(rb_cWebView, "stop_loading", wk_webview_stop_loading, 0);
+    rb_define_method(rb_cWebView, "can_go_back?", wk_webview_can_go_back, 0);
+    rb_define_method(rb_cWebView, "can_go_forward?", wk_webview_can_go_forward, 0);
+    rb_define_method(rb_cWebView, "go_back", wk_webview_go_back, 0);
+    rb_define_method(rb_cWebView, "go_forward", wk_webview_go_forward, 0);
+    rb_define_method(rb_cWebView, "reload", wk_webview_reload, 0);
+    rb_define_method(rb_cWebView, "load_html_string", wk_webview_load_html_string, 2);
+    rb_define_method(rb_cWebView, "execute_script", wk_webview_execute_script, 1);
 
     G_DEF_SETTERS(rb_cWebView);
 }

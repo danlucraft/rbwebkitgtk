@@ -5,3 +5,10 @@ module Gtk
 end
 
 require 'src/rbwebkitgtk.so'
+
+class Gtk::WebKit::WebView
+  alias :load_html_string_no_defaults :load_html_string
+  def load_html_string(content, base_uri=nil)
+    load_html_string_no_defaults(content, base_uri)
+  end
+end
