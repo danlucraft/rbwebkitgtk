@@ -1,9 +1,8 @@
 
 RbWebKitGTK
 
-These are semi-usable bindings. There are a lot of methods missing,
-and only one class, the Gtk::WebKit::WebView widget. But it works
-for displaying web pages and arbitrary HTML.
+These are usable bindings. There are still some methods missing 
+from WebView, but you can use almost the whole API at this point.
 
 To build:
 
