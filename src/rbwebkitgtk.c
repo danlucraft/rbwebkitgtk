@@ -33,6 +33,7 @@
 #include "rbwebkitgtkversion.h"
 
 #define _WEBVIEW_SELF(s) (WEBKIT_WEB_VIEW(RVAL2GOBJ(s)))
+#define _HISTITEM_SELF(s) (WEBKIT_WEB_HISTORY_ITEM(RVAL2GOBJ(s)))
 
 /*
  * Class: Gtk::WebKit::WebView
@@ -224,6 +225,69 @@ wk_webview_execute_script(self, rb_script)
 }
 
 
+/*
+ * Class: Gtk::WebKit::WebHistoryItem
+ *
+ * This class wraps the WebKit WebHistoryItem object in a Ruby 
+ * class.  The
+ * Please see the sample application ruby-webkit for more info and
+ * examples.
+ *
+ */
+
+
+/* 
+ * Class method: new
+ *
+ * Creates a new Gtk::WebKit::WebHistoryItem object with uri and 
+ * title.
+ *
+ * Returns: a newly created Gtk::WebKit::WebHistoryItem object.
+ *
+ */
+static VALUE
+wk_histitem_initialize(self, rb_uri, rb_title)
+    VALUE self, rb_uri, rb_title;
+{
+    G_INITIALIZE(self, WEBKIT_WEB_HISTORY_ITEM (
+                     webkit_web_history_item_new_with_data (
+                         RVAL2CSTR(rb_uri), 
+                         RVAL2CSTR(rb_title)
+                         )));
+    return Qnil;
+}
+
+/*
+ * Method: get_title
+ *
+ * Returns: the page title of the WebHistoryItem.
+ *
+ */
+static VALUE
+wk_histitem_get_title(self)
+    VALUE self;
+{
+    gchar* title;
+    title = (gchar *) webkit_web_history_item_get_title(_HISTITEM_SELF(self));
+    return CSTR2RVAL(title);
+}
+
+/*
+ * Method: get_uri
+ *
+ * Returns: the page uri of the WebHistoryItem.
+ *
+ */
+static VALUE
+wk_histitem_get_uri(self)
+    VALUE self;
+{
+    gchar* title;
+    title = (gchar *) webkit_web_history_item_get_uri(_HISTITEM_SELF(self));
+    return CSTR2RVAL(title);
+}
+
+
 /*                                                           */
 /*************************************************************/
 
@@ -247,4 +311,12 @@ Init_rbwebkitgtk()
     rb_define_method(rb_cWebView, "execute_script", wk_webview_execute_script, 1);
 
     G_DEF_SETTERS(rb_cWebView);
+
+    VALUE rb_cWebHistoryItem = G_DEF_CLASS(WEBKIT_TYPE_WEB_HISTORY_ITEM, "WebHistoryItem", rb_mWebKit);
+    rb_define_method(rb_cWebHistoryItem, "initialize", wk_histitem_initialize, 2);
+    rb_define_method(rb_cWebHistoryItem, "get_title", wk_histitem_get_title, 0);
+    rb_define_method(rb_cWebHistoryItem, "get_uri", wk_histitem_get_title, 0);
+
+//    G_DEF_SETTERS(rb_cWebHistoryItem);
+
 }
