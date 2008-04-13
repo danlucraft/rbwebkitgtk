@@ -71,38 +71,54 @@ wk_webview_initialize(self)
 }
 
 /*
- * Method: open(url)
+ * Method: set_maintains_back_forward_list(maintain)
  *
- * url: the url to load (String).
- *
- * This method starts loading the given url, and returns
- * immediately. The url should be in the form "http://www.gnome.org".
+ * maintain: whether the WebView should maintain a WebBackForwardList (True or False)
  *
  * Returns: self.
  *
  */
 
 static VALUE
-wk_webview_open(self, rb_url)
-    VALUE self, rb_url;
+wk_webview_set_maintains_back_forward_list(self, maintain)
+    VALUE self, maintain;
 {
-    webkit_web_view_open (_WEBVIEW_SELF(self), RVAL2CSTR(rb_url));
+    webkit_web_view_set_maintains_back_forward_list (_WEBVIEW_SELF(self), RVAL2CBOOL(maintain));
     return self;
 }
 
 /*
- * Method: stop_loading
+ * Method: get_back_forward_list
  *
- * Stops loading the current page.
+ * Returns: the WebBackForwardList for this WebView.
+ *
+ */
+
+static VALUE
+wk_webview_get_back_forward_list(self)
+    VALUE self;
+{
+    WebKitWebBackForwardList* bflist;
+    bflist = webkit_web_view_get_back_forward_list (_WEBVIEW_SELF(self));
+    return GOBJ2RVAL(bflist);
+}
+
+/*
+ * Method: go_to_history_item(item)
+ *
+ * item: the WebHistoryItem to load (WebHistoryItem).
+ *
+ * This method makes the WebView visit the history item.
  *
  * Returns: self.
  *
  */
+
 static VALUE
-wk_webview_stop_loading(self)
-    VALUE self;
+wk_webview_go_to_history_item(self, item)
+    VALUE self, item;
 {
-    webkit_web_view_stop_loading(_WEBVIEW_SELF(self));
+    webkit_web_view_go_to_back_forward_item (_WEBVIEW_SELF(self), _HISTITEM_SELF(item));
     return self;
 }
 
@@ -119,6 +135,28 @@ wk_webview_can_go_back(self)
     VALUE self;
 {
     return CBOOL2RVAL(webkit_web_view_can_go_back(_WEBVIEW_SELF(self)));
+}
+
+/*
+ * Method: can_go_back_or_forward?(steps)
+ *
+ * steps: a number of steps
+ *
+ * This method reflects the status of the browsing history. Negative values
+ * represent steps backward while positive values represent steps forward.
+ *
+ * Returns: True if the browser can go back or forwards by the given 
+ * number of steps, False otherwise.
+ *
+ */
+static VALUE
+wk_webview_can_go_back_or_forward(self, steps)
+    VALUE self, steps;
+{
+    return CBOOL2RVAL(webkit_web_view_can_go_back_or_forward(
+                          _WEBVIEW_SELF(self),
+                          NUM2INT(steps)
+                          ));
 }
 
 /*
@@ -168,6 +206,41 @@ wk_webview_go_forward(self)
     return self;
 }
 
+/*
+ * Method: open(url)
+ *
+ * url: the url to load (String).
+ *
+ * This method starts loading the given url, and returns
+ * immediately. The url should be in the form "http://www.gnome.org".
+ *
+ * Returns: self.
+ *
+ */
+
+static VALUE
+wk_webview_open(self, rb_url)
+    VALUE self, rb_url;
+{
+    webkit_web_view_open (_WEBVIEW_SELF(self), RVAL2CSTR(rb_url));
+    return self;
+}
+
+/*
+ * Method: stop_loading
+ *
+ * Stops loading the current page.
+ *
+ * Returns: self.
+ *
+ */
+static VALUE
+wk_webview_stop_loading(self)
+    VALUE self;
+{
+    webkit_web_view_stop_loading(_WEBVIEW_SELF(self));
+    return self;
+}
 
 /*
  * Method: reload
@@ -225,6 +298,294 @@ wk_webview_execute_script(self, rb_script)
     return self;
 }
 
+/*
+ * Method: search_text(text, case_sensitive, forward, wrap)
+ *
+ * text: the String to search for.
+ * case_sensitive: True/False, case_sensitive?
+ * forward: True/False, whether to search forwards.
+ * wrap: True/False, continue looking at the beginning after reaching the end.
+ *
+ * Returns: True/False
+ *
+ */
+
+static VALUE
+wk_webview_search_text(self, text, case_sensitive, forward, wrap)
+    VALUE self, text, forward, case_sensitive, wrap;
+{
+    gboolean found;
+    found = webkit_web_view_search_text(
+        _WEBVIEW_SELF(self), 
+        RVAL2CSTR(text),
+        RVAL2CBOOL(case_sensitive),
+        RVAL2CBOOL(forward),
+        RVAL2CBOOL(wrap)
+        );
+    return CBOOL2RVAL(found);
+}
+
+/*
+ * Method: mark_text_matches_with_limit(text, case_sensitive, limit)
+ *
+ * text: the String to search for.
+ * case_sensitive: True/False, case_sensitive?
+ * limit: the maximum number of strings to look for (if 0, looks for all occurrences)
+ *
+ * Attempts to highlight all occurances of text inside WebView. These are 
+ * not highlighted by default until unmark_text_matches is called.
+ *
+ * Returns: the number of strings highlighted.
+ */
+
+static VALUE
+wk_webview_mark_text_matches_with_limit(self, text, case_sensitive, limit)
+    VALUE self, text, case_sensitive, limit;
+{
+    gint num_found;
+    num_found = webkit_web_view_mark_text_matches(
+        _WEBVIEW_SELF(self), 
+        RVAL2CSTR(text),
+        RVAL2CBOOL(case_sensitive),
+        NUM2INT(limit)
+        );
+    return INT2NUM(num_found);
+}
+
+/*
+ * Method: set_highlight_text_matches(should_highlight)
+ *
+ * should_highlight: (True/False) whether to highlight matches
+ *
+ * Highlights text matches previously marked by mark_text_matches. 
+ *
+ * Returns: self.
+ */
+
+static VALUE
+wk_webview_set_highlight_text_matches(self, should_highlight)
+    VALUE self, should_highlight;
+{
+    webkit_web_view_set_highlight_text_matches(_WEBVIEW_SELF(self), RVAL2CBOOL(should_highlight));
+    return self;
+}
+
+/*
+ * Method: unmark_text_matches
+ *
+ * Removes highlighting previously set by mark_text_matches.
+ *
+ * Returns: self.
+ */
+
+static VALUE
+wk_webview_unmark_text_matches(self)
+    VALUE self;
+{
+    webkit_web_view_unmark_text_matches(_WEBVIEW_SELF(self));
+    return self;
+}
+
+/*
+ * Method: can_cut_clipboard?
+ *
+ * Determines whether or not it is currently possible to cut to the clipboard.
+ *
+ * Returns: true or false.
+ */
+
+static VALUE
+wk_webview_can_cut_clipboard(self)
+    VALUE self;
+{
+    return CBOOL2RVAL(webkit_web_view_can_cut_clipboard(_WEBVIEW_SELF(self)));
+
+}
+
+/*
+ * Method: can_copy_clipboard?
+ *
+ * Determines whether or not it is currently possible to copy to the clipboard.
+ *
+ * Returns: true or false.
+ */
+
+static VALUE
+wk_webview_can_copy_clipboard(self)
+    VALUE self;
+{
+    return CBOOL2RVAL(webkit_web_view_can_copy_clipboard(_WEBVIEW_SELF(self)));
+}
+
+/*
+ * Method: can_paste_clipboard?
+ *
+ * Determines whether or not it is currently possible to paste from the clipboard.
+ *
+ * Returns: true or false.
+ */
+
+static VALUE
+wk_webview_can_paste_clipboard(self)
+    VALUE self;
+{
+    return CBOOL2RVAL(webkit_web_view_can_paste_clipboard(_WEBVIEW_SELF(self)));
+}
+
+
+/*
+ * Method: cut_clipboard
+ *
+ * Cuts the current selection inside the WebView to the clipboard.
+ *
+ * Returns: self
+ */
+
+static VALUE
+wk_webview_cut_clipboard(self)
+    VALUE self;
+{
+    webkit_web_view_cut_clipboard(_WEBVIEW_SELF(self));
+    return self;
+}
+
+/*
+ * Method: copy_clipboard
+ *
+ * Copies the current selection inside the WebView to the clipboard.
+ *
+ * Returns: self.
+ */
+
+static VALUE
+wk_webview_copy_clipboard(self)
+    VALUE self;
+{
+    webkit_web_view_copy_clipboard(_WEBVIEW_SELF(self));
+    return self;
+}
+
+/*
+ * Method: paste_clipboard
+ *
+ * Pastes the current contents of the clipboard to the WebView.
+ *
+ * Returns: self.
+ */
+
+static VALUE
+wk_webview_paste_clipboard(self)
+    VALUE self;
+{
+    webkit_web_view_paste_clipboard(_WEBVIEW_SELF(self));
+    return self;
+}
+
+/*
+ * Method: delete_selection
+ *
+ * Deletes the current selection inside the WebView.
+ *
+ * Returns: self.
+ */
+
+static VALUE
+wk_webview_delete_selection(self)
+    VALUE self;
+{
+    webkit_web_view_delete_selection(_WEBVIEW_SELF(self));
+    return self;
+}
+
+/*
+ * Method: has_selection?
+ *
+ * Determines whether or not it text is currently selected.
+ *
+ * Returns: true or false.
+ */
+
+static VALUE
+wk_webview_has_selection(self)
+    VALUE self;
+{
+    return CBOOL2RVAL(webkit_web_view_has_selection(_WEBVIEW_SELF(self)));
+}
+
+/*
+ * Method: get_selected_text
+ *
+ * Returns: the selected text, or nil if none.
+ */
+
+/* static VALUE */
+/* wk_webview_get_selected_text(self) */
+/*     VALUE self; */
+/* { */
+/*     gchar* text = webkit_web_view_get_selected_text(_WEBVIEW_SELF(self)); */
+/*     return CSTR2RVAL(text); */
+/* } */
+
+/*
+ * Method: select_all
+ *
+ * Attempts to select everything inside the @web_view.
+ *
+ * Returns: self.
+ */
+
+static VALUE
+wk_webview_select_all(self)
+    VALUE self;
+{
+    webkit_web_view_select_all(_WEBVIEW_SELF(self));
+    return self;
+}
+
+/*
+ * Method: get_editable
+ *
+ * Returns: (True/False) whether the WebView is editable or not.
+ *
+ */
+static VALUE
+wk_webview_get_editable(self)
+    VALUE self;
+{
+    gboolean editable;
+    editable = webkit_web_view_get_editable(_WEBVIEW_SELF(self));
+    return CBOOL2RVAL(editable);
+}
+
+/*
+ * Method: set_editable(editable)
+ *
+ * editable: True/False, whether the WebView should be editable or not.
+ *
+ * By default a WebView is not editable.
+ *
+ * Returns: self.
+ *
+ */
+static VALUE
+wk_webview_set_editable(self, editable)
+    VALUE self;
+{
+    webkit_web_view_set_editable(_WEBVIEW_SELF(self), RVAL2CBOOL(editable));
+    return self;
+}
+
+/*
+ * Method: get_copy_target_list
+ *
+ * This function returns the list of targets this WebView can
+ * provide for clipboard copying and as DND source. The targets in the list are
+ * added with info values from the #WebKitWebViewTargetInfo enum,
+ * using gtk_target_list_add() and gtk_target_list_add_text_targets().
+ *
+ * Returns: A Gtk::TargetList
+ *
+ */
 
 /*
  * Class: Gtk::WebKit::WebHistoryItem
@@ -354,7 +715,6 @@ wk_histitem_get_last_visited_time_in_seconds(self)
         return Qnil;
     return LONG2NUM(time);
 }
-
 
 /*
  * Class: Gtk::WebKit::WebBackForwardList
@@ -637,15 +997,40 @@ Init_rbwebkitgtk()
     VALUE rb_cWebView = G_DEF_CLASS(WEBKIT_TYPE_WEB_VIEW, "WebView", rb_mWebKit);
 
     rb_define_method(rb_cWebView, "initialize", wk_webview_initialize, 0);
-    rb_define_method(rb_cWebView, "open", wk_webview_open, 1);
-    rb_define_method(rb_cWebView, "stop_loading", wk_webview_stop_loading, 0);
+    rb_define_method(rb_cWebView, "set_maintains_back_forward_list", wk_webview_set_maintains_back_forward_list, 1);
+    rb_define_method(rb_cWebView, "get_back_forward_list", wk_webview_get_back_forward_list, 0);
+    /* This is webkit_web_view_go_to_back_forward_item in the API: */
+    rb_define_method(rb_cWebView, "go_to_history_item", wk_webview_go_to_history_item, 1);
     rb_define_method(rb_cWebView, "can_go_back?", wk_webview_can_go_back, 0);
+    rb_define_method(rb_cWebView, "can_go_back_or_forward?", wk_webview_can_go_back_or_forward, 1);
     rb_define_method(rb_cWebView, "can_go_forward?", wk_webview_can_go_forward, 0);
     rb_define_method(rb_cWebView, "go_back", wk_webview_go_back, 0);
     rb_define_method(rb_cWebView, "go_forward", wk_webview_go_forward, 0);
+    rb_define_method(rb_cWebView, "stop_loading", wk_webview_stop_loading, 0);
+    rb_define_method(rb_cWebView, "open", wk_webview_open, 1);
     rb_define_method(rb_cWebView, "reload", wk_webview_reload, 0);
     rb_define_method(rb_cWebView, "load_html_string", wk_webview_load_html_string, 2);
     rb_define_method(rb_cWebView, "execute_script", wk_webview_execute_script, 1);
+    rb_define_method(rb_cWebView, "search_text", wk_webview_search_text, 4);
+    rb_define_method(rb_cWebView, "mark_text_matches_with_limit", wk_webview_mark_text_matches_with_limit, 3);
+    rb_define_method(rb_cWebView, "set_highlight_text_matches", wk_webview_set_highlight_text_matches, 1);
+    rb_define_method(rb_cWebView, "unmark_text_matches", wk_webview_unmark_text_matches, 1);
+    rb_define_method(rb_cWebView, "can_cut_clipboard?", wk_webview_can_cut_clipboard, 0);
+    rb_define_method(rb_cWebView, "can_copy_clipboard?", wk_webview_can_copy_clipboard, 0);
+    rb_define_method(rb_cWebView, "can_paste_clipboard?", wk_webview_can_paste_clipboard, 0);
+    rb_define_method(rb_cWebView, "cut_clipboard", wk_webview_cut_clipboard, 0);
+    rb_define_method(rb_cWebView, "copy_clipboard", wk_webview_copy_clipboard, 0);
+    rb_define_method(rb_cWebView, "paste_clipboard", wk_webview_paste_clipboard, 0);
+    rb_define_method(rb_cWebView, "delete_selection", wk_webview_delete_selection, 0);
+    rb_define_method(rb_cWebView, "has_selection?", wk_webview_has_selection, 0);
+/*     rb_define_method(rb_cWebView, "get_selected_text", wk_webview_get_selected_text, 0); */
+    rb_define_method(rb_cWebView, "select_all", wk_webview_select_all, 0);
+    rb_define_method(rb_cWebView, "get_editable", wk_webview_get_editable, 0);
+    rb_define_method(rb_cWebView, "set_editable", wk_webview_set_editable, 1);
+/*     rb_define_method(rb_cWebView, "get_copy_target_list", wk_webview_get_copy_target_list, 0); */
+/*     rb_define_method(rb_cWebView, "get_paste_target_list", wk_webview_get_paste_target_list, 0); */
+/*     rb_define_method(rb_cWebView, "get_transparent", wk_webview_get_transparent, 0); */
+/*     rb_define_method(rb_cWebView, "set_transparent", wk_webview_set_transparent, 1); */
 
     G_DEF_SETTERS(rb_cWebView);
 

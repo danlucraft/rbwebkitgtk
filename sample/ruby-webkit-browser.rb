@@ -30,6 +30,8 @@ refresh = bar.append(Gtk::Stock::REFRESH) {
 home = bar.append(Gtk::Stock::HOME) { 
   wv.open("http://www.google.com/")
 #  wv.execute_script("alert('foo');")
+#  p wv.mark_text_matches("Redcar", false, 100)
+#  wv.set_highlight_text_matches(true)
 }
 
 hbox.pack_start(bar, false)
@@ -58,10 +60,11 @@ vbox.pack_start(status, false)
 
 win.add(vbox)
 win.set_size_request(800, 600)
-wv.load_html_string(<<-HTML)
-<h1>Ruby-WebKitGtk Bindings</h1>
-GPL 2.1
-HTML
+# wv.load_html_string(<<-HTML)
+# <h1>Ruby-WebKitGtk Bindings</h1>
+# GPL 2.1
+# HTML
+wv.open("http://www.google.com/")
 win.show_all
 
 Gtk.main
