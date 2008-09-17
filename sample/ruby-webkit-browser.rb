@@ -28,8 +28,8 @@ refresh = bar.append(Gtk::Stock::REFRESH) {
 }
 
 home = bar.append(Gtk::Stock::HOME) { 
-  wv.open("http://www.google.com/")
-#  wv.execute_script("alert('foo');")
+#   wv.open("http://www.google.com/")
+  wv.execute_script("alert('foo');")
 #  p wv.mark_text_matches("Redcar", false, 100)
 #  wv.set_highlight_text_matches(true)
 }
@@ -55,8 +55,18 @@ wv.signal_connect("hovering-over-link") do |_, _, link|
   end
 end
 
+js_eval = Gtk::Entry.new
+hbox = Gtk::HBox.new
+hbox.pack_start(js_eval)
+eval_button = Gtk::Button.new("eval")
+hbox.pack_start(eval_button)
+eval_button.signal_connect("clicked") do
+  wv.execute_script(js_eval.text)
+end
+
 vbox.pack_start(wv)
 vbox.pack_start(status, false)
+vbox.pack_start(hbox, false)
 
 win.add(vbox)
 win.set_size_request(800, 600)

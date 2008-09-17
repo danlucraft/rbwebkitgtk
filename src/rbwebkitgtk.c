@@ -28,13 +28,13 @@
 
 #include "rbgtk.h"
 
-#include "webkit/webkit.h"
+#include "webkit.h"
 
 #include "rbwebkitgtkversion.h"
 
 #define _WEBVIEW_SELF(s) (WEBKIT_WEB_VIEW(RVAL2GOBJ(s)))
-#define _HISTITEM_SELF(s) (WEBKIT_WEB_HISTORY_ITEM(RVAL2GOBJ(s)))
-#define _BFLIST_SELF(s) (WEBKIT_WEB_BACK_FORWARD_LIST(RVAL2GOBJ(s)))
+/* #define _HISTITEM_SELF(s) (WEBKIT_WEB_HISTORY_ITEM(RVAL2GOBJ(s))) */
+/* #define _BFLIST_SELF(s) (WEBKIT_WEB_BACK_FORWARD_LIST(RVAL2GOBJ(s))) */
 
 /*
  * Class: Gtk::WebKit::WebView
@@ -79,13 +79,13 @@ wk_webview_initialize(self)
  *
  */
 
-static VALUE
-wk_webview_set_maintains_back_forward_list(self, maintain)
-    VALUE self, maintain;
-{
-    webkit_web_view_set_maintains_back_forward_list (_WEBVIEW_SELF(self), RVAL2CBOOL(maintain));
-    return self;
-}
+/* static VALUE */
+/* wk_webview_set_maintains_back_forward_list(self, maintain) */
+/*     VALUE self, maintain; */
+/* { */
+/*     webkit_web_view_set_maintains_back_forward_list (_WEBVIEW_SELF(self), RVAL2CBOOL(maintain)); */
+/*     return self; */
+/* } */
 
 /*
  * Method: get_back_forward_list
@@ -94,14 +94,14 @@ wk_webview_set_maintains_back_forward_list(self, maintain)
  *
  */
 
-static VALUE
-wk_webview_get_back_forward_list(self)
-    VALUE self;
-{
-    WebKitWebBackForwardList* bflist;
-    bflist = webkit_web_view_get_back_forward_list (_WEBVIEW_SELF(self));
-    return GOBJ2RVAL(bflist);
-}
+/* static VALUE */
+/* wk_webview_get_back_forward_list(self) */
+/*     VALUE self; */
+/* { */
+/*     WebKitWebBackForwardList* bflist; */
+/*     bflist = webkit_web_view_get_back_forward_list (_WEBVIEW_SELF(self)); */
+/*     return GOBJ2RVAL(bflist); */
+/* } */
 
 /*
  * Method: go_to_history_item(item)
@@ -114,13 +114,13 @@ wk_webview_get_back_forward_list(self)
  *
  */
 
-static VALUE
-wk_webview_go_to_history_item(self, item)
-    VALUE self, item;
-{
-    webkit_web_view_go_to_back_forward_item (_WEBVIEW_SELF(self), _HISTITEM_SELF(item));
-    return self;
-}
+/* static VALUE */
+/* wk_webview_go_to_history_item(self, item) */
+/*     VALUE self, item; */
+/* { */
+/*     webkit_web_view_go_to_back_forward_item (_WEBVIEW_SELF(self), _HISTITEM_SELF(item)); */
+/*     return self; */
+/* } */
 
 /*
  * Method: can_go_back?
@@ -607,17 +607,17 @@ wk_webview_set_editable(self, editable)
  * Returns: a newly created Gtk::WebKit::WebHistoryItem object.
  *
  */
-static VALUE
-wk_histitem_initialize(self, rb_uri, rb_title)
-    VALUE self, rb_uri, rb_title;
-{
-    G_INITIALIZE(self, WEBKIT_WEB_HISTORY_ITEM (
-                     webkit_web_history_item_new_with_data (
-                         RVAL2CSTR(rb_uri), 
-                         RVAL2CSTR(rb_title)
-                         )));
-    return Qnil;
-}
+/* static VALUE */
+/* wk_histitem_initialize(self, rb_uri, rb_title) */
+/*     VALUE self, rb_uri, rb_title; */
+/* { */
+/*     G_INITIALIZE(self, WEBKIT_WEB_HISTORY_ITEM ( */
+/*                      webkit_web_history_item_new_with_data ( */
+/*                          RVAL2CSTR(rb_uri),  */
+/*                          RVAL2CSTR(rb_title) */
+/*                          ))); */
+/*     return Qnil; */
+/* } */
 
 /*
  * Method: get_title
@@ -625,14 +625,14 @@ wk_histitem_initialize(self, rb_uri, rb_title)
  * Returns: the page title of the WebHistoryItem.
  *
  */
-static VALUE
-wk_histitem_get_title(self)
-    VALUE self;
-{
-    gchar* title;
-    title = (gchar *) webkit_web_history_item_get_title(_HISTITEM_SELF(self));
-    return CSTR2RVAL(title);
-}
+/* static VALUE */
+/* wk_histitem_get_title(self) */
+/*     VALUE self; */
+/* { */
+/*     gchar* title; */
+/*     title = (gchar *) webkit_web_history_item_get_title(_HISTITEM_SELF(self)); */
+/*     return CSTR2RVAL(title); */
+/* } */
 
 /*
  * Method: get_alternate_title
@@ -640,14 +640,14 @@ wk_histitem_get_title(self)
  * Returns: the alternate title of the WebHistoryItem.
  *
  */
-static VALUE
-wk_histitem_get_alternate_title(self)
-    VALUE self;
-{
-    gchar* title;
-    title = (gchar *) webkit_web_history_item_get_alternate_title(_HISTITEM_SELF(self));
-    return CSTR2RVAL(title);
-}
+/* static VALUE */
+/* wk_histitem_get_alternate_title(self) */
+/*     VALUE self; */
+/* { */
+/*     gchar* title; */
+/*     title = (gchar *) webkit_web_history_item_get_alternate_title(_HISTITEM_SELF(self)); */
+/*     return CSTR2RVAL(title); */
+/* } */
 
 /*
  * Method: set_alternate_title
@@ -657,16 +657,16 @@ wk_histitem_get_alternate_title(self)
  * Returns: self.
  *
  */
-static VALUE
-wk_histitem_set_alternate_title(self, rb_title)
-    VALUE self, rb_title;
-{
-    webkit_web_history_item_set_alternate_title(
-        _HISTITEM_SELF(self),
-        RVAL2CSTR(rb_title)
-        );
-    return self;
-}
+/* static VALUE */
+/* wk_histitem_set_alternate_title(self, rb_title) */
+/*     VALUE self, rb_title; */
+/* { */
+/*     webkit_web_history_item_set_alternate_title( */
+/*         _HISTITEM_SELF(self), */
+/*         RVAL2CSTR(rb_title) */
+/*         ); */
+/*     return self; */
+/* } */
 
 /*
  * Method: get_uri
@@ -674,14 +674,14 @@ wk_histitem_set_alternate_title(self, rb_title)
  * Returns: the page uri of the WebHistoryItem.
  *
  */
-static VALUE
-wk_histitem_get_uri(self)
-    VALUE self;
-{
-    gchar* uri;
-    uri = (gchar *) webkit_web_history_item_get_uri(_HISTITEM_SELF(self));
-    return CSTR2RVAL(uri);
-}
+/* static VALUE */
+/* wk_histitem_get_uri(self) */
+/*     VALUE self; */
+/* { */
+/*     gchar* uri; */
+/*     uri = (gchar *) webkit_web_history_item_get_uri(_HISTITEM_SELF(self)); */
+/*     return CSTR2RVAL(uri); */
+/* } */
 
 /*
  * Method: get_original_uri
@@ -689,14 +689,14 @@ wk_histitem_get_uri(self)
  * Returns: the original uri of the WebHistoryItem.
  *
  */
-static VALUE
-wk_histitem_get_original_uri(self)
-    VALUE self;
-{
-    gchar* uri;
-    uri = (gchar *) webkit_web_history_item_get_uri(_HISTITEM_SELF(self));
-    return CSTR2RVAL(uri);
-}
+/* static VALUE */
+/* wk_histitem_get_original_uri(self) */
+/*     VALUE self; */
+/* { */
+/*     gchar* uri; */
+/*     uri = (gchar *) webkit_web_history_item_get_uri(_HISTITEM_SELF(self)); */
+/*     return CSTR2RVAL(uri); */
+/* } */
 
 /*
  * Method: get_last_visited_time_in_seconds
@@ -705,16 +705,16 @@ wk_histitem_get_original_uri(self)
  *          or nil if this WebHistoryItem has never been visited.
  *
  */
-static VALUE
-wk_histitem_get_last_visited_time_in_seconds(self)
-    VALUE self;
-{
-    gdouble time;
-    time = webkit_web_history_item_get_last_visited_time(_HISTITEM_SELF(self));
-    if (time == 0)
-        return Qnil;
-    return LONG2NUM(time);
-}
+/* static VALUE */
+/* wk_histitem_get_last_visited_time_in_seconds(self) */
+/*     VALUE self; */
+/* { */
+/*     gdouble time; */
+/*     time = webkit_web_history_item_get_last_visited_time(_HISTITEM_SELF(self)); */
+/*     if (time == 0) */
+/*         return Qnil; */
+/*     return LONG2NUM(time); */
+/* } */
 
 /*
  * Class: Gtk::WebKit::WebBackForwardList
@@ -736,16 +736,16 @@ wk_histitem_get_last_visited_time_in_seconds(self)
  * Returns: a newly created Gtk::WebKit::WebBackForwardList object.
  *
  */
-static VALUE
-wk_bflist_initialize(self, rb_webview)
-    VALUE self, rb_webview;
-{
-    G_INITIALIZE(self, WEBKIT_WEB_BACK_FORWARD_LIST (
-                     webkit_web_back_forward_list_new_with_web_view (
-                         _WEBVIEW_SELF(rb_webview)
-                         )));
-    return Qnil;
-}
+/* static VALUE */
+/* wk_bflist_initialize(self, rb_webview) */
+/*     VALUE self, rb_webview; */
+/* { */
+/*     G_INITIALIZE(self, WEBKIT_WEB_BACK_FORWARD_LIST ( */
+/*                      webkit_web_back_forward_list_new_with_web_view ( */
+/*                          _WEBVIEW_SELF(rb_webview) */
+/*                          ))); */
+/*     return Qnil; */
+/* } */
 
 /*
  * Method: go_forward
@@ -755,13 +755,13 @@ wk_bflist_initialize(self, rb_webview)
  * Returns: self.
  *
  */
-static VALUE
-wk_bflist_go_forward(self)
-    VALUE self;
-{
-    webkit_web_back_forward_list_go_forward(_BFLIST_SELF(self));
-    return self;
-}
+/* static VALUE */
+/* wk_bflist_go_forward(self) */
+/*     VALUE self; */
+/* { */
+/*     webkit_web_back_forward_list_go_forward(_BFLIST_SELF(self)); */
+/*     return self; */
+/* } */
 
 
 /*
@@ -772,13 +772,13 @@ wk_bflist_go_forward(self)
  * Returns: self.
  *
  */
-static VALUE
-wk_bflist_go_back(self)
-    VALUE self;
-{
-    webkit_web_back_forward_list_go_back(_BFLIST_SELF(self));
-    return self;
-}
+/* static VALUE */
+/* wk_bflist_go_back(self) */
+/*     VALUE self; */
+/* { */
+/*     webkit_web_back_forward_list_go_back(_BFLIST_SELF(self)); */
+/*     return self; */
+/* } */
 
 /*
  * Method: contains_item?
@@ -788,17 +788,17 @@ wk_bflist_go_back(self)
  * Returns: true or false.
  *
  */
-static VALUE
-wk_bflist_contains_item(self, rb_item)
-    VALUE self, rb_item;
-{
-    gboolean has;
-    has = webkit_web_back_forward_list_contains_item(
-        _BFLIST_SELF(self),
-        _HISTITEM_SELF(rb_item)
-        );
-    return CBOOL2RVAL(has);
-}
+/* static VALUE */
+/* wk_bflist_contains_item(self, rb_item) */
+/*     VALUE self, rb_item; */
+/* { */
+/*     gboolean has; */
+/*     has = webkit_web_back_forward_list_contains_item( */
+/*         _BFLIST_SELF(self), */
+/*         _HISTITEM_SELF(rb_item) */
+/*         ); */
+/*     return CBOOL2RVAL(has); */
+/* } */
 
 /*
  * Method: go_to_item
@@ -808,16 +808,16 @@ wk_bflist_contains_item(self, rb_item)
  * Returns: self.
  *
  */
-static VALUE
-wk_bflist_go_to_item(self, rb_item)
-    VALUE self, rb_item;
-{
-    webkit_web_back_forward_list_go_to_item(
-        _BFLIST_SELF(self),
-        _HISTITEM_SELF(rb_item)
-        );
-    return self;
-}
+/* static VALUE */
+/* wk_bflist_go_to_item(self, rb_item) */
+/*     VALUE self, rb_item; */
+/* { */
+/*     webkit_web_back_forward_list_go_to_item( */
+/*         _BFLIST_SELF(self), */
+/*         _HISTITEM_SELF(rb_item) */
+/*         ); */
+/*     return self; */
+/* } */
 
 /*
  * Method: get_forward_list_with_limit
@@ -825,17 +825,17 @@ wk_bflist_go_to_item(self, rb_item)
  * Returns: an array of WebHistoryItems.
  *
  */
-static VALUE
-wk_bflist_get_forward_list_with_limit(self, rb_limit)
-    VALUE self, rb_limit;
-{
-    GList* list;
-    list = webkit_web_back_forward_list_get_forward_list_with_limit(
-        _BFLIST_SELF(self),
-        NUM2INT(rb_limit)
-        );
-    return GLIST2ARY(list);
-}
+/* static VALUE */
+/* wk_bflist_get_forward_list_with_limit(self, rb_limit) */
+/*     VALUE self, rb_limit; */
+/* { */
+/*     GList* list; */
+/*     list = webkit_web_back_forward_list_get_forward_list_with_limit( */
+/*         _BFLIST_SELF(self), */
+/*         NUM2INT(rb_limit) */
+/*         ); */
+/*     return GLIST2ARY(list); */
+/* } */
 
 /*
  * Method: get_back_list_with_limit
@@ -844,17 +844,17 @@ wk_bflist_get_forward_list_with_limit(self, rb_limit)
  *
  */
 
-static VALUE
-wk_bflist_get_back_list_with_limit(self, rb_limit)
-    VALUE self, rb_limit;
-{
-    GList* list;
-    list = webkit_web_back_forward_list_get_back_list_with_limit(
-        _BFLIST_SELF(self),
-        NUM2INT(rb_limit)
-        );
-    return GLIST2ARY(list);
-}
+/* static VALUE */
+/* wk_bflist_get_back_list_with_limit(self, rb_limit) */
+/*     VALUE self, rb_limit; */
+/* { */
+/*     GList* list; */
+/*     list = webkit_web_back_forward_list_get_back_list_with_limit( */
+/*         _BFLIST_SELF(self), */
+/*         NUM2INT(rb_limit) */
+/*         ); */
+/*     return GLIST2ARY(list); */
+/* } */
 
 
 /*
@@ -863,14 +863,14 @@ wk_bflist_get_back_list_with_limit(self, rb_limit)
  * Returns: the WebHistoryItem that precedes the current item.
  *
  */
-static VALUE
-wk_bflist_get_back_item(self)
-    VALUE self;
-{
-    WebKitWebHistoryItem* item;
-    item = webkit_web_back_forward_list_get_back_item(_BFLIST_SELF(self));
-    return GOBJ2RVAL(item); // FIXME: is this correct?
-}
+/* static VALUE */
+/* wk_bflist_get_back_item(self) */
+/*     VALUE self; */
+/* { */
+/*     WebKitWebHistoryItem* item; */
+/*     item = webkit_web_back_forward_list_get_back_item(_BFLIST_SELF(self)); */
+/*     return GOBJ2RVAL(item); // FIXME: is this correct? */
+/* } */
 
 /*
  * Method: get_current_item
@@ -878,14 +878,14 @@ wk_bflist_get_back_item(self)
  * Returns: the currrent WebHistoryItem in the WebBackForwardList.
  *
  */
-static VALUE
-wk_bflist_get_current_item(self)
-    VALUE self;
-{
-    WebKitWebHistoryItem* item;
-    item = webkit_web_back_forward_list_get_current_item(_BFLIST_SELF(self));
-    return GOBJ2RVAL(item); // FIXME: is this correct?
-}
+/* static VALUE */
+/* wk_bflist_get_current_item(self) */
+/*     VALUE self; */
+/* { */
+/*     WebKitWebHistoryItem* item; */
+/*     item = webkit_web_back_forward_list_get_current_item(_BFLIST_SELF(self)); */
+/*     return GOBJ2RVAL(item); // FIXME: is this correct? */
+/* } */
 
 /*
  * Method: get_forward_item
@@ -894,14 +894,14 @@ wk_bflist_get_current_item(self)
  * in the WebBackForwardList.
  *
  */
-static VALUE
-wk_bflist_get_forward_item(self)
-    VALUE self;
-{
-    WebKitWebHistoryItem* item;
-    item = webkit_web_back_forward_list_get_forward_item(_BFLIST_SELF(self));
-    return GOBJ2RVAL(item); // FIXME: is this correct?
-}
+/* static VALUE */
+/* wk_bflist_get_forward_item(self) */
+/*     VALUE self; */
+/* { */
+/*     WebKitWebHistoryItem* item; */
+/*     item = webkit_web_back_forward_list_get_forward_item(_BFLIST_SELF(self)); */
+/*     return GOBJ2RVAL(item); // FIXME: is this correct? */
+/* } */
 
 /*
  * Method: get_nth_item
@@ -909,17 +909,17 @@ wk_bflist_get_forward_item(self)
  * Returns: the nth WebHistoryItem in the WebBackForwardList.
  *
  */
-static VALUE
-wk_bflist_get_nth_item(self, rb_num)
-    VALUE self, rb_num;
-{
-    WebKitWebHistoryItem* item;
-    item = webkit_web_back_forward_list_get_nth_item(
-        _BFLIST_SELF(self),
-        NUM2INT(rb_num)
-        );
-    return GOBJ2RVAL(item); // FIXME: is this correct?
-}
+/* static VALUE */
+/* wk_bflist_get_nth_item(self, rb_num) */
+/*     VALUE self, rb_num; */
+/* { */
+/*     WebKitWebHistoryItem* item; */
+/*     item = webkit_web_back_forward_list_get_nth_item( */
+/*         _BFLIST_SELF(self), */
+/*         NUM2INT(rb_num) */
+/*         ); */
+/*     return GOBJ2RVAL(item); // FIXME: is this correct? */
+/* } */
 
 /*
  * Method: get_back_length
@@ -928,14 +928,14 @@ wk_bflist_get_nth_item(self, rb_num)
  * WebBackForwardList.
  *
  */
-static VALUE
-wk_bflist_get_back_length(self)
-    VALUE self;
-{
-    gint length;
-    length = webkit_web_back_forward_list_get_back_length(_BFLIST_SELF(self));
-    return INT2FIX(length);
-}
+/* static VALUE */
+/* wk_bflist_get_back_length(self) */
+/*     VALUE self; */
+/* { */
+/*     gint length; */
+/*     length = webkit_web_back_forward_list_get_back_length(_BFLIST_SELF(self)); */
+/*     return INT2FIX(length); */
+/* } */
 
 /*
  * Method: get_forward_length
@@ -944,14 +944,14 @@ wk_bflist_get_back_length(self)
  * WebBackForwardList.
  *
  */
-static VALUE
-wk_bflist_get_forward_length(self)
-    VALUE self;
-{
-    gint length;
-    length = webkit_web_back_forward_list_get_forward_length(_BFLIST_SELF(self));
-    return INT2FIX(length);
-}
+/* static VALUE */
+/* wk_bflist_get_forward_length(self) */
+/*     VALUE self; */
+/* { */
+/*     gint length; */
+/*     length = webkit_web_back_forward_list_get_forward_length(_BFLIST_SELF(self)); */
+/*     return INT2FIX(length); */
+/* } */
 
 /*
  * Method: get_limit
@@ -959,14 +959,14 @@ wk_bflist_get_forward_length(self)
  * Returns: the maximum number of items in the WebBackForwardList.
  *
  */
-static VALUE
-wk_bflist_get_limit(self)
-    VALUE self;
-{
-    gint limit;
-    limit = webkit_web_back_forward_list_get_limit(_BFLIST_SELF(self));
-    return INT2FIX(limit);
-}
+/* static VALUE */
+/* wk_bflist_get_limit(self) */
+/*     VALUE self; */
+/* { */
+/*     gint limit; */
+/*     limit = webkit_web_back_forward_list_get_limit(_BFLIST_SELF(self)); */
+/*     return INT2FIX(limit); */
+/* } */
 
 /*
  * Method: set_limit
@@ -976,13 +976,13 @@ wk_bflist_get_limit(self)
  * Returns: self.
  *
  */
-static VALUE
-wk_bflist_set_limit(self, rb_limit)
-    VALUE self;
-{
-    webkit_web_back_forward_list_set_limit(_BFLIST_SELF(self), NUM2INT(rb_limit));
-    return self;
-}
+/* static VALUE */
+/* wk_bflist_set_limit(self, rb_limit) */
+/*     VALUE self; */
+/* { */
+/*     webkit_web_back_forward_list_set_limit(_BFLIST_SELF(self), NUM2INT(rb_limit)); */
+/*     return self; */
+/* } */
 
 
 /*                                                           */
@@ -997,10 +997,10 @@ Init_rbwebkitgtk()
     VALUE rb_cWebView = G_DEF_CLASS(WEBKIT_TYPE_WEB_VIEW, "WebView", rb_mWebKit);
 
     rb_define_method(rb_cWebView, "initialize", wk_webview_initialize, 0);
-    rb_define_method(rb_cWebView, "set_maintains_back_forward_list", wk_webview_set_maintains_back_forward_list, 1);
-    rb_define_method(rb_cWebView, "get_back_forward_list", wk_webview_get_back_forward_list, 0);
+    /* rb_define_method(rb_cWebView, "set_maintains_back_forward_list", wk_webview_set_maintains_back_forward_list, 1); */
+    /* rb_define_method(rb_cWebView, "get_back_forward_list", wk_webview_get_back_forward_list, 0); */
     /* This is webkit_web_view_go_to_back_forward_item in the API: */
-    rb_define_method(rb_cWebView, "go_to_history_item", wk_webview_go_to_history_item, 1);
+    /* rb_define_method(rb_cWebView, "go_to_history_item", wk_webview_go_to_history_item, 1); */
     rb_define_method(rb_cWebView, "can_go_back?", wk_webview_can_go_back, 0);
     rb_define_method(rb_cWebView, "can_go_back_or_forward?", wk_webview_can_go_back_or_forward, 1);
     rb_define_method(rb_cWebView, "can_go_forward?", wk_webview_can_go_forward, 0);
@@ -1034,31 +1034,31 @@ Init_rbwebkitgtk()
 
     G_DEF_SETTERS(rb_cWebView);
 
-    VALUE rb_cWebHistoryItem = G_DEF_CLASS(WEBKIT_TYPE_WEB_HISTORY_ITEM, "WebHistoryItem", rb_mWebKit);
-    rb_define_method(rb_cWebHistoryItem, "initialize", wk_histitem_initialize, 2);
-    rb_define_method(rb_cWebHistoryItem, "get_title", wk_histitem_get_title, 0);
-    rb_define_method(rb_cWebHistoryItem, "get_alternate_title", wk_histitem_get_alternate_title, 0);
-    rb_define_method(rb_cWebHistoryItem, "set_alternate_title", wk_histitem_set_alternate_title, 1);
-    rb_define_method(rb_cWebHistoryItem, "get_uri", wk_histitem_get_uri, 0);
-    rb_define_method(rb_cWebHistoryItem, "get_original_uri", wk_histitem_get_original_uri, 0);
-    rb_define_method(rb_cWebHistoryItem, "get_last_visited_time_in_seconds", wk_histitem_get_last_visited_time_in_seconds, 0);
+/*     VALUE rb_cWebHistoryItem = G_DEF_CLASS(WEBKIT_TYPE_WEB_HISTORY_ITEM, "WebHistoryItem", rb_mWebKit); */
+/*     rb_define_method(rb_cWebHistoryItem, "initialize", wk_histitem_initialize, 2); */
+/*     rb_define_method(rb_cWebHistoryItem, "get_title", wk_histitem_get_title, 0); */
+/*     rb_define_method(rb_cWebHistoryItem, "get_alternate_title", wk_histitem_get_alternate_title, 0); */
+/*     rb_define_method(rb_cWebHistoryItem, "set_alternate_title", wk_histitem_set_alternate_title, 1); */
+/*     rb_define_method(rb_cWebHistoryItem, "get_uri", wk_histitem_get_uri, 0); */
+/*     rb_define_method(rb_cWebHistoryItem, "get_original_uri", wk_histitem_get_original_uri, 0); */
+/*     rb_define_method(rb_cWebHistoryItem, "get_last_visited_time_in_seconds", wk_histitem_get_last_visited_time_in_seconds, 0); */
 
-//    G_DEF_SETTERS(rb_cWebHistoryItem);
+/* //    G_DEF_SETTERS(rb_cWebHistoryItem); */
 
-    VALUE rb_cWebBackForwardList = G_DEF_CLASS(WEBKIT_TYPE_WEB_BACK_FORWARD_LIST, "WebBackForwardList", rb_mWebKit);
-    rb_define_method(rb_cWebBackForwardList, "initialize", wk_bflist_initialize, 1);
-    rb_define_method(rb_cWebBackForwardList, "go_back", wk_bflist_go_back, 0);
-    rb_define_method(rb_cWebBackForwardList, "go_forward", wk_bflist_go_forward, 0);
-    rb_define_method(rb_cWebBackForwardList, "contains_item?", wk_bflist_contains_item, 1);
-    rb_define_method(rb_cWebBackForwardList, "go_to_item", wk_bflist_go_to_item, 1);
-    rb_define_method(rb_cWebBackForwardList, "get_forward_list_with_limit", wk_bflist_get_forward_list_with_limit, 1);
-    rb_define_method(rb_cWebBackForwardList, "get_back_list_with_limit", wk_bflist_get_back_list_with_limit, 1);
-    rb_define_method(rb_cWebBackForwardList, "get_nth_item", wk_bflist_get_nth_item, 1);
-    rb_define_method(rb_cWebBackForwardList, "get_back_item", wk_bflist_get_back_item, 0);
-    rb_define_method(rb_cWebBackForwardList, "get_current_item", wk_bflist_get_current_item, 0);
-    rb_define_method(rb_cWebBackForwardList, "get_forward_item", wk_bflist_get_forward_item, 0);
-    rb_define_method(rb_cWebBackForwardList, "get_back_length", wk_bflist_get_back_length, 0);
-    rb_define_method(rb_cWebBackForwardList, "get_forward_length", wk_bflist_get_forward_length, 0);
-    rb_define_method(rb_cWebBackForwardList, "get_limit", wk_bflist_get_limit, 0);
-    rb_define_method(rb_cWebBackForwardList, "set_limit", wk_bflist_set_limit, 1);
+    /* VALUE rb_cWebBackForwardList = G_DEF_CLASS(WEBKIT_TYPE_WEB_BACK_FORWARD_LIST, "WebBackForwardList", rb_mWebKit); */
+    /* rb_define_method(rb_cWebBackForwardList, "initialize", wk_bflist_initialize, 1); */
+    /* rb_define_method(rb_cWebBackForwardList, "go_back", wk_bflist_go_back, 0); */
+    /* rb_define_method(rb_cWebBackForwardList, "go_forward", wk_bflist_go_forward, 0); */
+    /* rb_define_method(rb_cWebBackForwardList, "contains_item?", wk_bflist_contains_item, 1); */
+    /* rb_define_method(rb_cWebBackForwardList, "go_to_item", wk_bflist_go_to_item, 1); */
+    /* rb_define_method(rb_cWebBackForwardList, "get_forward_list_with_limit", wk_bflist_get_forward_list_with_limit, 1); */
+    /* rb_define_method(rb_cWebBackForwardList, "get_back_list_with_limit", wk_bflist_get_back_list_with_limit, 1); */
+    /* rb_define_method(rb_cWebBackForwardList, "get_nth_item", wk_bflist_get_nth_item, 1); */
+    /* rb_define_method(rb_cWebBackForwardList, "get_back_item", wk_bflist_get_back_item, 0); */
+    /* rb_define_method(rb_cWebBackForwardList, "get_current_item", wk_bflist_get_current_item, 0); */
+    /* rb_define_method(rb_cWebBackForwardList, "get_forward_item", wk_bflist_get_forward_item, 0); */
+    /* rb_define_method(rb_cWebBackForwardList, "get_back_length", wk_bflist_get_back_length, 0); */
+    /* rb_define_method(rb_cWebBackForwardList, "get_forward_length", wk_bflist_get_forward_length, 0); */
+    /* rb_define_method(rb_cWebBackForwardList, "get_limit", wk_bflist_get_limit, 0); */
+    /* rb_define_method(rb_cWebBackForwardList, "set_limit", wk_bflist_set_limit, 1); */
 }
