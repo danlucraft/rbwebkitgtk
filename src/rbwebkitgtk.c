@@ -28,7 +28,8 @@
 
 #include "rbgtk.h"
 
-#include "webkit.h"
+#include "webkit/webkit.h"
+#include "webkit/webkitwebview.h"
 
 #include "rbwebkitgtkversion.h"
 
