@@ -1,0 +1,71 @@
+"cc -I. -I/usr/lib/ruby/1.8/x86_64-linux -I.    -fno-strict-aliasing -g -g -O2  -fPIC     -c conftest.c"
+checked program was:
+/* begin */
+1: /*top*/
+2: #ifndef __GNUC__
+3: # error
+4: >>>>>> __GNUC__ undefined <<<<<<
+5: #endif
+/* end */
+
+have_func: checking for rb_define_alloc_func() in ruby.h... -------------------- yes
+
+"cc -o conftest -I. -I/usr/lib/ruby/1.8/x86_64-linux -I.    -I/usr/local/lib/site_ruby/1.8/x86_64-linux  -fno-strict-aliasing -g -g -O2  -fPIC   -Wall conftest.c  -L. -L/usr/lib -L. -Wl,-Bsymbolic-functions -rdynamic -Wl,-export-dynamic     -lruby1.8-static  -lpthread -lrt -ldl -lcrypt -lm   -lc"
+checked program was:
+/* begin */
+1: #include <ruby.h>
+2: 
+3: /*top*/
+4: int main() { return 0; }
+5: int t() { void ((*volatile p)()); p = (void ((*)()))rb_define_alloc_func; return 0; }
+/* end */
+
+--------------------
+
+have_func: checking for rb_block_proc() in ruby.h... -------------------- yes
+
+"cc -o conftest -I. -I/usr/lib/ruby/1.8/x86_64-linux -I.    -I/usr/local/lib/site_ruby/1.8/x86_64-linux  -fno-strict-aliasing -g -g -O2  -fPIC   -Wall conftest.c  -L. -L/usr/lib -L. -Wl,-Bsymbolic-functions -rdynamic -Wl,-export-dynamic     -lruby1.8-static  -lpthread -lrt -ldl -lcrypt -lm   -lc"
+checked program was:
+/* begin */
+1: #include <ruby.h>
+2: 
+3: /*top*/
+4: int main() { return 0; }
+5: int t() { void ((*volatile p)()); p = (void ((*)()))rb_block_proc; return 0; }
+/* end */
+
+--------------------
+
+"cc -I. -I/usr/lib/ruby/1.8/x86_64-linux -I.    -I/usr/local/lib/site_ruby/1.8/x86_64-linux  -fno-strict-aliasing -g -g -O2  -fPIC   -Wall   -c conftest.c"
+checked program was:
+/* begin */
+1: #include "ruby.h"
+2: #include "node.h"
+3: int node_attrasgn = (int)NODE_ATTRASGN;
+/* end */
+
+"cc -I. -I/usr/lib/ruby/1.8/x86_64-linux -I.    -I/usr/local/lib/site_ruby/1.8/x86_64-linux  -fno-strict-aliasing -g -g -O2  -fPIC   -Wall -D_REENTRANT -I/usr/include/gtk-2.0 -I/usr/lib/gtk-2.0/include -I/usr/include/atk-1.0 -I/usr/include/cairo -I/usr/include/pango-1.0 -I/usr/include/pixman-1 -I/usr/include/freetype2 -I/usr/include/directfb -I/usr/include/libpng12 -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include   -D_REENTRANT -I/usr/include/webkit-1.0 -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/gtk-2.0 -I/usr/include/libsoup-2.4 -I/usr/lib/gtk-2.0/include -I/usr/include/atk-1.0 -I/usr/include/cairo -I/usr/include/pango-1.0 -I/usr/include/pixman-1 -I/usr/include/freetype2 -I/usr/include/directfb -I/usr/include/libpng12 -I/usr/include/libxml2     -c conftest.c"
+conftest.c:4:3: error: #error 
+conftest.c:5: error: expected identifier or ‘(’ before ‘>>’ token
+checked program was:
+/* begin */
+1: #include <glibconfig.h>
+2: /*top*/
+3: #ifndef G_PLATFORM_WIN32
+4: # error
+5: >>>>>> G_PLATFORM_WIN32 undefined <<<<<<
+6: #endif
+/* end */
+
+have_library: checking for main() in -lwebkit-1.0... -------------------- yes
+
+"cc -o conftest -I. -I/usr/lib/ruby/1.8/x86_64-linux -I.    -I/usr/local/lib/site_ruby/1.8/x86_64-linux  -fno-strict-aliasing -g -g -O2  -fPIC   -Wall -D_REENTRANT -I/usr/include/gtk-2.0 -I/usr/lib/gtk-2.0/include -I/usr/include/atk-1.0 -I/usr/include/cairo -I/usr/include/pango-1.0 -I/usr/include/pixman-1 -I/usr/include/freetype2 -I/usr/include/directfb -I/usr/include/libpng12 -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include   -D_REENTRANT -I/usr/include/webkit-1.0 -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/gtk-2.0 -I/usr/include/libsoup-2.4 -I/usr/lib/gtk-2.0/include -I/usr/include/atk-1.0 -I/usr/include/cairo -I/usr/include/pango-1.0 -I/usr/include/pixman-1 -I/usr/include/freetype2 -I/usr/include/directfb -I/usr/include/libpng12 -I/usr/include/libxml2   conftest.c  -L. -L/usr/lib -L. -Wl,-Bsymbolic-functions -rdynamic -Wl,-export-dynamic       -lgtk-x11-2.0 -lgdk-x11-2.0 -latk-1.0 -lpangoft2-1.0 -lgdk_pixbuf-2.0 -lm -lpangocairo-1.0 -lgio-2.0 -lcairo -lpango-1.0 -lfreetype -lfontconfig -lgobject-2.0 -lgmodule-2.0 -lglib-2.0   -lwebkit-1.0 -lgtk-x11-2.0 -lsoup-2.4 -lgdk-x11-2.0 -latk-1.0 -lpangoft2-1.0 -lgdk_pixbuf-2.0 -lm -lpangocairo-1.0 -lcairo -lpango-1.0 -lfreetype -lfontconfig -lgio-2.0 -lgobject-2.0 -lgmodule-2.0 -lglib-2.0   -lruby1.8-static -lwebkit-1.0  -lgtk-x11-2.0 -lgdk-x11-2.0 -latk-1.0 -lpangoft2-1.0 -lgdk_pixbuf-2.0 -lm -lpangocairo-1.0 -lgio-2.0 -lcairo -lpango-1.0 -lfreetype -lfontconfig -lgobject-2.0 -lgmodule-2.0 -lglib-2.0   -lwebkit-1.0 -lgtk-x11-2.0 -lsoup-2.4 -lgdk-x11-2.0 -latk-1.0 -lpangoft2-1.0 -lgdk_pixbuf-2.0 -lm -lpangocairo-1.0 -lcairo -lpango-1.0 -lfreetype -lfontconfig -lgio-2.0 -lgobject-2.0 -lgmodule-2.0 -lglib-2.0   -lpthread -lrt -ldl -lcrypt -lm   -lc"
+checked program was:
+/* begin */
+1: /*top*/
+2: int main() { return 0; }
+3: int t() { void ((*volatile p)()); p = (void ((*)()))main; return 0; }
+/* end */
+
+--------------------
+

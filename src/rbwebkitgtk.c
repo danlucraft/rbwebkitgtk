@@ -577,6 +577,45 @@ wk_webview_set_editable(self, editable)
 }
 
 /*
+ * Method: get_uri
+ *
+ * Returns: uri
+ * 
+ */
+static VALUE
+wk_webview_get_uri(self)
+    VALUE self;
+{
+    gchar* uri;
+    uri = webkit_web_view_get_uri(_WEBVIEW_SELF(self));
+    return CSTR2RVAL(uri);
+}
+
+/*
+ * Method: zoom_in
+ * 
+ */
+static VALUE
+wk_webview_zoom_in(self)
+    VALUE self;
+{
+    webkit_web_view_zoom_in(_WEBVIEW_SELF(self));
+    return self;
+}
+
+/*
+ * Method: zoom_in
+ * 
+ */
+static VALUE
+wk_webview_zoom_out(self)
+    VALUE self;
+{
+    webkit_web_view_zoom_out(_WEBVIEW_SELF(self));
+    return self;
+}
+
+/*
  * Method: get_copy_target_list
  *
  * This function returns the list of targets this WebView can
@@ -1028,6 +1067,9 @@ Init_rbwebkitgtk()
     rb_define_method(rb_cWebView, "select_all", wk_webview_select_all, 0);
     rb_define_method(rb_cWebView, "get_editable", wk_webview_get_editable, 0);
     rb_define_method(rb_cWebView, "set_editable", wk_webview_set_editable, 1);
+    rb_define_method(rb_cWebView, "get_uri", wk_webview_get_uri, 0);
+    rb_define_method(rb_cWebView, "zoom_in", wk_webview_zoom_in, 0);
+    rb_define_method(rb_cWebView, "zoom_out", wk_webview_zoom_out, 0);
 /*     rb_define_method(rb_cWebView, "get_copy_target_list", wk_webview_get_copy_target_list, 0); */
 /*     rb_define_method(rb_cWebView, "get_paste_target_list", wk_webview_get_paste_target_list, 0); */
 /*     rb_define_method(rb_cWebView, "get_transparent", wk_webview_get_transparent, 0); */
